@@ -21,26 +21,18 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     // reset login status
-    const userStr = localStorage.getItem('currentUser');
-    if (userStr) {
-      const userJson = JSON.parse(userStr);
-      if (userJson && userJson.token) {
-        this.authenticationService.logout();
-      }
-    }
+    this.authenticationService.logout();
     // get return url from route parameters or default to '/'
     this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/admin';
   }
 
   login() {
-    this.router.navigate([this.returnUrl]);
-/*
     this.loading = true;
     this.authenticationService.login(this.model.username, this.model.password)
       .subscribe(
-        user => {
-          if (user && user.token) {
-            localStorage.setItem('currentUser', JSON.stringify(user));
+        res => {
+          if (res && res.data) {
+            localStorage.setItem('token', res.data);
           }
           setTimeout(() => {
             this.loading = false;
@@ -54,6 +46,5 @@ export class LoginComponent implements OnInit {
         },
         () => setTimeout(() => this.loading = false, 2000)
       );
-*/
   }
 }

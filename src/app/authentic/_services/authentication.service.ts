@@ -5,7 +5,7 @@ import { SharedService } from '../../shared/shared.service';
 export class AuthenticationService extends SharedService {
 
     login(username: string, password: string) {
-      return this.post(this.BASE_URL + 'login-service/authenticate', { username: username, password: password });
+      return this.post(this.BASE_URL + 'login.php', { username: username, password: password });
     }
 
     logout() {

@@ -6,7 +6,7 @@ import { throwError as observableThrowError, Observable } from 'rxjs';
 @Injectable()
 export class SharedService {
 
-  protected BASE_URL = 'loca';
+  protected BASE_URL = '//localhost/indieteq-php-my-sql-pdo-database-class/api/';
 
   constructor(private http: HttpClient) { }
 
@@ -62,7 +62,7 @@ export class SharedService {
 
   doLogout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
-    this.get(this.BASE_URL + 'login-service/logout').subscribe();
+    localStorage.clear();
+    this.get(this.BASE_URL + 'login.php').subscribe();
   }
 }
