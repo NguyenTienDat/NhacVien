@@ -6,13 +6,15 @@ import { AuthGuard } from '../authentic/_guards/auth.guard';
 
 import { AdminService } from './services/admin.service';
 import { AdminComponent } from './admin.component';
+import { CourseComponent } from './components/course/course.component';
 import { SharedUiService } from '../shared/shared-ui.service';
 
-import {
-  MatToolbarModule,
-  MatButtonModule,
-  MatSidenavModule
-} from '@angular/material';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule } from '@angular/material';
+import { DxDataGridModule } from 'devextreme-angular';
+
+const dxImports = [
+  DxDataGridModule
+];
 
 const adminRoutes: Routes = [
   {
@@ -22,6 +24,7 @@ const adminRoutes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard' },
       { path: 'dashboard', loadChildren: 'src/app/admin/components/dashboard/dashboard.module#DashboardModule' },
+      { path: 'course', component: CourseComponent },
       { path: '**', redirectTo: '/page-not-found' }
     ]
   }
@@ -34,10 +37,12 @@ const adminRoutes: Routes = [
     RouterModule.forChild(adminRoutes),
     MatToolbarModule,
     MatButtonModule,
-    MatSidenavModule
+    MatSidenavModule,
+    dxImports
   ],
   declarations: [
-    AdminComponent
+    AdminComponent,
+    CourseComponent
   ],
   providers: [AdminService, SharedUiService]
 })

@@ -7,10 +7,10 @@ import { SharedService } from '../../shared/shared.service';
 export class AdminService extends SharedService {
   /**
   * ============================================================================================
-  * Intents
+  * Course
   * ============================================================================================
   */
-  public getListIntents(): Observable<any> {
-    return this.get('get-intents');
+  public getListCourse(): Observable<any> {
+    return this.get(this.BASE_URL + 'course/');
   }
 }

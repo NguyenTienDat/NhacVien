@@ -6,7 +6,7 @@ import { throwError as observableThrowError, Observable } from 'rxjs';
 @Injectable()
 export class SharedService {
 
-  protected BASE_URL = '//localhost/indieteq-php-my-sql-pdo-database-class/api/';
+  protected BASE_URL = 'https://restful-nhacvien.000webhostapp.com/server/api/';
 
   constructor(private http: HttpClient) { }
 
