@@ -1,1 +1,50 @@
-<dx-data-grid [dataSource]="listItems"></dx-data-grid>
+<div class="course-page">
+  <div class="btn-container">
+    <dx-button id="btn-add" type="default" icon="fa fa-plus-circle" text="THÊM MỚI" (click)="showEditPopup(null, false)"></dx-button>
+    <dx-text-box #txtSearchBox id="txt-search-box" placeholder="Tìm kiếm" (onKeyUp)="search(txtSearchBox)"></dx-text-box>
+  </div>
+  <div class="content-container">
+    <div class="item-course shadow p-3 mb-5 bg-white rounded" *ngFor="let course of listItemsDisplay">
+      <p class="course-name" [placement]="'bottom'" [ngbTooltip]="course?.name">{{ course?.name }}
+        <i [id]="'course' + course?.id" class="fa fa-chevron-circle-down" aria-hidden="true" (click)="popoverInfo?.instance?.show()"></i>
+      </p>
+      <p class="course-description" [placement]="'bottom'" [ngbTooltip]="course?.description">{{ course?.description }}&nbsp;</p>
+      <p class="course-cost">{{ course?.cost | number }}</p>
+      <dx-popover #popoverInfo [target]="'#course' + course?.id" position="bottom" [width]="100">
+        <div *dxTemplate="let data = model of 'content'">
+          <ul class="ulInfo">
+            <li (click)="showEditPopup(course, true)" style="color: blue">
+              <i class="fa fa-pencil-square" aria-hidden="true"></i>
+              Sửa
+            </li>
+            <li (click)="showConfirmDelete(course)" style="color: red">
+              <i class="fa fa-trash" aria-hidden="true"></i>
+              Xóa
+            </li>
+          </ul>
+        </div>
+      </dx-popover>
+    </div>
+  </div>
+  <dx-popup [title]="isEditMode ? 'SỬA KHÓA HỌC' : 'THÊM KHÓA HỌC'" [(visible)]="isPopupCourseVisible" [width]="400" [height]="280">
+      <div *dxTemplate="let data of 'content'">
+        <div class="popup-course-edit-container">
+          <div class="field-value">
+            <dx-text-box #txtName placeholder="Tên khóa học" [value]="isEditMode ? selectedCourse?.name : ''"></dx-text-box>
+          </div>
+          <div class="field-value">
+            <dx-text-area #txtDescription placeholder="Mô tả thêm về khóa học" [value]="isEditMode ? selectedCourse?.description : ''"></dx-text-area>
+          </div>
+          <div class="field-value">
+            <dx-number-box #txtCost placeholder="Học phí" format="#,##0" [step]="100000" [rtlEnabled]="true" [min]="0" [value]="isEditMode ? selectedCourse?.cost : 0"></dx-number-box>
+          </div>
+          <dx-button class="btn btn-save pull-right"
+                    [icon]="isEditMode ? 'fa fa-floppy-o' : 'fa fa-plus-circle'"
+                    [text]="isEditMode ? 'Lưu' : 'Thêm'"
+                    (click)="editCourse({name: txtName?.text, description: txtDescription?.text, cost: txtCost?.value})"
+                    type="default">
+          </dx-button>
+        </div>
+      </div>
+  </dx-popup>
+</div>

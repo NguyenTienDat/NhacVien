@@ -9,6 +9,7 @@
 .admin-page {
   height: calc(100% - 64px);
   overflow-y: auto;
+  background: #ecf7eb;
 }
 #sidenav {
   width: 250px;
@@ -70,7 +71,7 @@
   .navbar-content {
     padding-top: 30px;
     text-indent: 20px;
-    
+
     .menu-container {
       .item-base {
         cursor: pointer;
