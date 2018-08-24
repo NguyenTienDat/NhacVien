@@ -18,7 +18,6 @@ export class SharedService {
     const httpOptions = { params: params };
     return this.http.get(url, httpOptions)
       .pipe(
-        retry(3), // retry a failed request up to 3 times
         catchError((e) => this.handleError(e)) // then handle the error
       );
   }
@@ -27,7 +26,6 @@ export class SharedService {
     const httpOptions = { params: params };
     return this.http.post(url, body, httpOptions)
       .pipe(
-        retry(3), // retry a failed request up to 3 times
         catchError((e) => this.handleError(e)) // then handle the error
       );
   }
@@ -36,7 +34,6 @@ export class SharedService {
     const httpOptions = { params: params };
     return this.http.put(url, body, httpOptions)
       .pipe(
-        retry(3), // retry a failed request up to 3 times
         catchError((e) => this.handleError(e)) // then handle the error
       );
   }
@@ -45,7 +42,6 @@ export class SharedService {
     const httpOptions = { params: params };
     return this.http.delete(url, httpOptions)
       .pipe(
-        retry(3), // retry a failed request up to 3 times
         catchError((e) => this.handleError(e)) // then handle the error
       );
   }

@@ -1,0 +1,79 @@
+.course-page {
+  .btn-container {
+    padding: 10px;
+    display: flex;
+
+    #btn-add {
+      flex: 1 1 0;
+    }
+
+    #txt-search-box {
+      flex: 8 1 0;
+      margin-left: 10px;
+    }
+  }
+  .content-container {
+    color: #6d6d6f;
+
+    .item-course {
+      height: 170px;
+      border: 1px solid #dadada;
+      padding: 15px;
+      width: 270px;
+      float: left;
+      margin: 10px;
+      color: #3cbab2;
+
+      .course-name {
+        font-size: 20px;
+        font-weight: bold;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+        padding-right: 20px;
+
+        i {
+          right: 0;
+          position: absolute;
+          line-height: 35px;
+          cursor: pointer;
+        }
+      }
+
+      .course-description {
+        font-size: 14px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+      }
+
+      .course-cost {
+        font-size: 36px;
+        font-weight: bold;
+        text-align: right;
+      }
+    }
+  }
+}
+
+/deep/ .ulInfo {
+  list-style: none;
+  font-size: 18px;
+  padding: 0;
+  margin: 0;
+
+  li {
+    padding: 5px 0;
+    cursor: pointer;
+  }
+}
+/deep/ .popup-course-edit-container {
+  .field-value {
+    margin: 5px 0;
+  }
+  .btn-save {
+    margin-top: 10px;
+  }
+}

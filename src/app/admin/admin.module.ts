@@ -10,10 +10,26 @@ import { CourseComponent } from './components/course/course.component';
 import { SharedUiService } from '../shared/shared-ui.service';
 
 import { MatToolbarModule, MatButtonModule, MatSidenavModule } from '@angular/material';
-import { DxDataGridModule } from 'devextreme-angular';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import {
+  DxDataGridModule,
+  DxButtonModule,
+  DxPopupModule,
+  DxPopoverModule,
+  DxTextBoxModule,
+  DxNumberBoxModule,
+  DxTextAreaModule
+} from 'devextreme-angular';
 
 const dxImports = [
-  DxDataGridModule
+  DxDataGridModule,
+  DxButtonModule,
+  DxPopupModule,
+  DxPopoverModule,
+  DxTextBoxModule,
+  DxNumberBoxModule,
+  DxTextAreaModule
 ];
 
 const adminRoutes: Routes = [
@@ -29,7 +45,6 @@ const adminRoutes: Routes = [
     ]
   }
 ];
-
 @NgModule({
   imports: [
     CommonModule,
@@ -38,7 +53,8 @@ const adminRoutes: Routes = [
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
-    dxImports
+    dxImports,
+    NgbModule
   ],
   declarations: [
     AdminComponent,
