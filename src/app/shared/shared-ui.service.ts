@@ -6,6 +6,8 @@ import * as moment from 'moment';
 @Injectable()
 export class SharedUiService {
 
+  public DELAY_TIME_RELOAD = 1000; // Thời gian chờ để reload api
+
   public showConfirm(message: string, title: string) {
     return confirm(message, title);
   }

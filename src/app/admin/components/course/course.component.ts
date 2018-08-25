@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Subject, Observable, empty, BehaviorSubject } from 'rxjs';
-
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subject, empty } from 'rxjs';
+import { debounceTime, map, switchMap, startWith } from 'rxjs/operators';
 import { AdminService, CourseModel } from '../../services/admin.service';
 import { SharedUiService, ToastType } from '../../../shared/shared-ui.service';
-import { debounceTime, map, takeWhile, switchMap, share, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
   styleUrls: ['./course.component.scss']
 })
-export class CourseComponent implements OnInit {
+export class CourseComponent implements OnInit, OnDestroy {
 
   private listItems: CourseModel[] = [];
   public listItemsDisplay: CourseModel[] = [];
@@ -21,7 +20,6 @@ export class CourseComponent implements OnInit {
   private searchSubscriber = new Subject<any>();
   private pageAlive = true;
   private strSearch = '';
-  private TIME_OUT = 1000;
 
   constructor(
     private adminService: AdminService,
@@ -41,6 +39,10 @@ export class CourseComponent implements OnInit {
           return empty();
         }),
       ).subscribe();
+  }
+
+  ngOnDestroy() {
+    this.pageAlive = false;
   }
 
   private filter(searchStr: string, refresh = false) {
@@ -104,7 +106,7 @@ export class CourseComponent implements OnInit {
     if (message && message.trim() !== '') {
       this.sharedUiService.showToast(message, ToastType.success);
     }
-    setTimeout(() => this.filter(this.strSearch, true), this.TIME_OUT);
+    setTimeout(() => this.filter(this.strSearch, true), this.sharedUiService.DELAY_TIME_RELOAD);
   }
 
   public showEditPopup(course: CourseModel, isEditMode: boolean) {
