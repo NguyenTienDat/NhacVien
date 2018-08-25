@@ -13,11 +13,11 @@
       <dx-popover #popoverInfo [target]="'#course' + course?.id" position="bottom" [width]="100">
         <div *dxTemplate="let data = model of 'content'">
           <ul class="ulInfo">
-            <li (click)="showEditPopup(course, true)" style="color: blue">
+            <li (click)="showEditPopup(course, true);popoverInfo?.instance?.hide();" style="color: blue">
               <i class="fa fa-pencil-square" aria-hidden="true"></i>
               Sửa
             </li>
-            <li (click)="showConfirmDelete(course)" style="color: red">
+            <li (click)="showConfirmDelete(course);popoverInfo?.instance?.hide();" style="color: red">
               <i class="fa fa-trash" aria-hidden="true"></i>
               Xóa
             </li>
@@ -26,7 +26,7 @@
       </dx-popover>
     </div>
   </div>
-  <dx-popup [title]="isEditMode ? 'SỬA KHÓA HỌC' : 'THÊM KHÓA HỌC'" [(visible)]="isPopupCourseVisible" [width]="400" [height]="280">
+  <dx-popup [title]="isEditMode ? 'SỬA KHÓA HỌC' : 'THÊM KHÓA HỌC'" [(visible)]="isPopupCourseVisible" [width]="400" [height]="280" [dragEnabled]="false">
       <div *dxTemplate="let data of 'content'">
         <div class="popup-course-edit-container">
           <div class="field-value">

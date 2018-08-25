@@ -1,3 +1,4 @@
+import { StudentComponent } from './components/student/student.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -7,10 +8,12 @@ import { AuthGuard } from '../authentic/_guards/auth.guard';
 import { AdminService } from './services/admin.service';
 import { AdminComponent } from './admin.component';
 import { CourseComponent } from './components/course/course.component';
+import { ClassroomComponent } from './components/classroom/classroom.component';
 import { SharedUiService } from '../shared/shared-ui.service';
 
 import { MatToolbarModule, MatButtonModule, MatSidenavModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ExamComponent } from './components/exam/exam.component';
 
 import {
   DxDataGridModule,
@@ -38,9 +41,12 @@ const adminRoutes: Routes = [
     component: AdminComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: 'dashboard' },
-      { path: 'dashboard', loadChildren: 'src/app/admin/components/dashboard/dashboard.module#DashboardModule' },
+      { path: '', redirectTo: 'course' },
+      // { path: 'dashboard', loadChildren: 'src/app/admin/components/dashboard/dashboard.module#DashboardModule' },
       { path: 'course', component: CourseComponent },
+      { path: 'class', component: ClassroomComponent },
+      { path: 'student', component: StudentComponent },
+      { path: 'exam', component: ExamComponent },
       { path: '**', redirectTo: '/page-not-found' }
     ]
   }
@@ -58,7 +64,10 @@ const adminRoutes: Routes = [
   ],
   declarations: [
     AdminComponent,
-    CourseComponent
+    CourseComponent,
+    ClassroomComponent,
+    StudentComponent,
+    ExamComponent
   ],
   providers: [AdminService, SharedUiService]
 })
