@@ -1,0 +1,12 @@
+$color_primary: #3cbab2;
+
+/deep/ .dx-popup-title.dx-toolbar {
+  background: $color_primary;
+  color: #fff;
+  font-weight: bold;
+
+  .dx-closebutton .dx-icon {
+    color: #fff;
+    font-weight: bold;
+  }
+}
