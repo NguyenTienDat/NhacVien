@@ -2,7 +2,6 @@
 
 .course-page {
   .btn-container {
-    padding: 10px;
     display: flex;
 
     #btn-add {
@@ -16,6 +15,7 @@
   }
   .content-container {
     color: #6d6d6f;
+    margin-top: 10px;
 
     .item-course {
       height: 170px;
@@ -23,7 +23,7 @@
       padding: 15px;
       width: 270px;
       float: left;
-      margin: 10px;
+      margin: 10px 10px 10px 0;
       color: $color_primary;
 
       .course-name {

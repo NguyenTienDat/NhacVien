@@ -1,0 +1,54 @@
+@import '../../../../assets/css/style.global.scss';
+
+.class-page {
+  .content-container {
+    position: relative;
+    #btn-add {
+      position: absolute;
+      width: 150px;
+      top: 0;
+      left: 0;
+    }
+
+    /deep/ #data-grid-class {
+      .dx-toolbar {
+        .dx-toolbar-items-container {
+          position: relative;
+        }
+        .dx-toolbar-after {
+          padding: 0;
+          position: absolute;
+          right: 16px;
+          width: calc(100% - 150px - 16px);
+        }
+      }
+
+      .btn-action-column {
+        display: flex;
+
+        .btn-action-container {
+          flex: 1 1 0;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+/deep/ .popup-class-edit-container {
+  .field-value {
+    margin: 5px 0;
+  }
+
+  .date-container {
+    display: flex;
+
+    .date-field {
+      flex: 1 1 0;
+    }
+  }
+
+  .btn-save {
+    margin-top: 10px;
+  }
+}

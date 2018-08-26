@@ -50,7 +50,7 @@ export class SharedService {
    * @param error
    */
   private handleError(error: HttpErrorResponse) {
-    if (error.error && error.error.status && error.error.status === 'required auth') {
+    if (error.error && error.error.status && (error.error.status + '').includes('TOKEN')) {
       this.doLogout();
     }
     return observableThrowError(error);

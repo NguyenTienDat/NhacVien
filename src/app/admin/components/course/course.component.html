@@ -28,7 +28,7 @@
   </div>
   <dx-popup [title]="isEditMode ? 'SỬA KHÓA HỌC' : 'THÊM KHÓA HỌC'" [(visible)]="isPopupCourseVisible" [width]="400" [height]="280" [dragEnabled]="false">
       <div *dxTemplate="let data of 'content'">
-        <div class="popup-course-edit-container">
+        <div class="popup-course-edit-container" *ngIf="isPopupCourseVisible">
           <div class="field-value">
             <dx-text-box #txtName placeholder="Tên khóa học" [value]="isEditMode ? selectedCourse?.name : ''"></dx-text-box>
           </div>

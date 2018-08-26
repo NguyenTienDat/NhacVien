@@ -4,16 +4,15 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthGuard } from '../authentic/_guards/auth.guard';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule } from '@angular/material';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AdminService } from './services/admin.service';
 import { AdminComponent } from './admin.component';
 import { CourseComponent } from './components/course/course.component';
 import { ClassroomComponent } from './components/classroom/classroom.component';
-import { SharedUiService } from '../shared/shared-ui.service';
-
-import { MatToolbarModule, MatButtonModule, MatSidenavModule } from '@angular/material';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ExamComponent } from './components/exam/exam.component';
+import { SharedUiService } from '../shared/shared-ui.service';
 
 import {
   DxDataGridModule,
@@ -22,7 +21,9 @@ import {
   DxPopoverModule,
   DxTextBoxModule,
   DxNumberBoxModule,
-  DxTextAreaModule
+  DxTextAreaModule,
+  DxDateBoxModule,
+  DxSelectBoxModule
 } from 'devextreme-angular';
 
 const dxImports = [
@@ -32,7 +33,9 @@ const dxImports = [
   DxPopoverModule,
   DxTextBoxModule,
   DxNumberBoxModule,
-  DxTextAreaModule
+  DxTextAreaModule,
+  DxDateBoxModule,
+  DxSelectBoxModule
 ];
 
 const adminRoutes: Routes = [

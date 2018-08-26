@@ -1,3 +1,95 @@
-<p>
-  classroom works!
-</p>
+<div class="class-page">
+  <!-- CONTENT -->
+  <div class="content-container">
+    <dx-data-grid id="data-grid-class"
+      [dataSource]="listItemsDisplay"
+      [showColumnHeaders]="true"
+      [hoverStateEnabled]="true" [activeStateEnabled]="true" [focusStateEnabled]="true"
+      noDataText="Không có dữ liệu!"
+      [loadPanel]="true"
+      [allowColumnResizing]="true"
+      (onContentReady)="onContentReady($event)">
+      <!-- CONFIG SEARCH -->
+      <dxo-filter-row [visible]="true"></dxo-filter-row>
+      <dxo-header-filter [visible]="true"></dxo-header-filter>
+      <dxo-search-panel [visible]="true" [width]="'100%'" [placeholder]="'Tìm kiếm'"></dxo-search-panel>
+      <!-- COLUMNS DEFINE -->
+      <dxi-column caption="TÊN LỚP" dataField="name" [width]="'auto'"></dxi-column>
+      <dxi-column caption="NGÀY BẮT ĐẦU" dataField="start_date" [alignment]="'center'" width="200" [dataType]="'date'" [format]="'dd/MM/yyyy'"></dxi-column>
+      <dxi-column caption="NGÀY KẾT THÚC" dataField="end_date" [alignment]="'center'" width="200" [dataType]="'date'" [format]="'dd/MM/yyyy'"></dxi-column>
+      <dxi-column caption="KHÓA HỌC" dataField="course_name" [width]="'auto'"></dxi-column>
+      <dxi-column caption="GHI CHÚ" dataField="description"></dxi-column>
+      <dxi-column caption="TÙY CHỌN" cellTemplate="actionCellTemplate" width="150"></dxi-column>
+      <div *dxTemplate="let cell of 'actionCellTemplate'" class="btn-action-column">
+        <div class="btn-action-container">
+          <dx-button [width]="50" type="default" icon="fa fa-pencil" [ngbTooltip]="'Sửa'" [placement]="'right'" (click)="showEditPopup(cell?.data, true)"></dx-button>
+        </div>
+        <div class="btn-action-container">
+          <dx-button [width]="50" type="danger" icon="fa fa-ban" [ngbTooltip]="'Xóa'" [placement]="'left'" (click)="showConfirmDelete(cell?.data)"></dx-button>
+        </div>
+      </div>
+      <!-- CONFIG PAGING -->
+      <dxo-paging [pageSize]="10" [enabled]="true"></dxo-paging>
+      <dxo-pager [visible]="true"
+                [showPageSizeSelector]="true"
+                [allowedPageSizes]="[5, 10, 20]"
+                [showInfo]="true"
+                infoText="Trang {0}/{1}. (Tổng: {2})">
+      </dxo-pager>
+    </dx-data-grid>
+
+    <dx-button id="btn-add" type="default" icon="fa fa-plus-circle" text="THÊM MỚI" (click)="showEditPopup(null, false)"></dx-button>
+  </div>
+
+  <!-- POPUP EDIT/ADD -->
+  <dx-popup [title]="isEditMode ? 'SỬA LỚP HỌC' : 'THÊM LỚP HỌC'" [(visible)]="isPopupClassVisible" [width]="400" [height]="320" [dragEnabled]="false">
+      <div *dxTemplate="let data of 'content'">
+        <div class="popup-class-edit-container" *ngIf="isPopupClassVisible">
+          <div class="field-value">
+            <dx-select-box #courseSelectBox
+                        placeholder="Chọn khóa học"
+                        [value]="isEditMode ? selectedClass?.course_id_ref : '-1'"
+                        [ngbTooltip]="'Chọn khóa học'" [placement]="'bottom'"
+                        [dataSource]="lsCourses"
+                        valueExpr="id"
+                        displayExpr="name">
+            </dx-select-box>
+          </div>
+          <div class="field-value">
+            <dx-text-box #txtName
+                        placeholder="Tên lớp học"
+                        [value]="isEditMode ? selectedClass?.name : ''"
+                        [ngbTooltip]="'Tên lớp học'" [placement]="'bottom'">
+            </dx-text-box>
+          </div>
+          <div class="field-value">
+            <dx-text-area #txtDescription
+                          placeholder="Mô tả thêm về lớp học"
+                          [value]="isEditMode ? selectedClass?.description : ''"
+                          [ngbTooltip]="'Mô tả thêm về lớp học'" [placement]="'bottom'">
+            </dx-text-area>
+          </div>
+          <div class="field-value date-container">
+            <dx-date-box #startTimeDateBox class="date-field"
+                        placeholder="Thời gian bắt đầu"
+                        [value]="isEditMode ? selectedClass?.start_date : ''"
+                        displayFormat="dd/MM/yyyy"
+                        [ngbTooltip]="'Ngày bắt đầu học'" [placement]="'bottom'">
+            </dx-date-box>
+            <dx-date-box #endTimeDateBox  class="date-field"
+                        placeholder="Thời gian kết thúc"
+                        [value]="isEditMode ? selectedClass?.end_date : ''"
+                        displayFormat="dd/MM/yyyy"
+                        [ngbTooltip]="'Ngày kết thúc'" [placement]="'bottom'">
+            </dx-date-box>
+          </div>
+          <dx-button class="btn btn-save pull-right"
+                    [icon]="isEditMode ? 'fa fa-floppy-o' : 'fa fa-plus-circle'"
+                    [text]="isEditMode ? 'Lưu' : 'Thêm'"
+                    (click)="editClass({name: txtName?.text, description: txtDescription?.text, start_date: startTimeDateBox?.value, end_date: endTimeDateBox?.value, course_id_ref: courseSelectBox?.value})"
+                    type="default">
+          </dx-button>
+        </div>
+      </div>
+  </dx-popup>
+</div>

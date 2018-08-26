@@ -5,7 +5,6 @@ import { AdminService, CourseModel } from '../../services/admin.service';
 import { SharedUiService, ToastType } from '../../../shared/shared-ui.service';
 
 @Component({
-  selector: 'app-course',
   templateUrl: './course.component.html',
   styleUrls: ['./course.component.scss']
 })
@@ -121,8 +120,7 @@ export class CourseComponent implements OnInit, OnDestroy {
       return;
     }
     const confirmDelete = this.sharedUiService.showConfirm(`
-      Tất cả dữ liệu liên quan đến khóa học này sẽ bị xóa.\n\r
-      Hãy chắc chắn rằng bạn muốn xóa khóa học: "${course.name}"
+      Bạn tực sự muốn xóa khóa học: "${course.name}" ?
     `, 'XÓA KHÓA HỌC');
     confirmDelete.then(confirm => {
       if (confirm) {

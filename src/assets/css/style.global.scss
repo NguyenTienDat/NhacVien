@@ -10,3 +10,18 @@ $color_primary: #3cbab2;
     font-weight: bold;
   }
 }
+
+// DATAGRID
+/deep/ .dx-datagrid {
+  .dx-datagrid-headers {
+    .dx-header-row {
+      min-height: 30px;
+      line-height: 30px;
+      font-weight: bold;
+
+      td {
+        text-align: center !important;
+      }
+    }
+  }
+}
