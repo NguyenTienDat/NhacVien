@@ -50,7 +50,7 @@ export class SharedService {
    * @param error
    */
   private handleError(error: HttpErrorResponse) {
-    if (error.error && error.error.status && (error.error.status + '').includes('TOKEN')) {
+    if (error.error && error.error.status && (error.error.status + '').toUpperCase().includes('TOKEN')) {
       this.doLogout();
     }
     return observableThrowError(error);
