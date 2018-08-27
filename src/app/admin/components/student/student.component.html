@@ -1,7 +1,7 @@
 <div class="student-page">
   <!-- CONTENT -->
   <div class="content-container">
-    <dx-data-grid id="data-grid-student"
+    <dx-data-grid keyExpr="id" id="data-grid-student"
       [dataSource]="listItemsDisplay"
       [showColumnHeaders]="true"
       [hoverStateEnabled]="true" [activeStateEnabled]="true" [focusStateEnabled]="true"
@@ -9,23 +9,28 @@
       [loadPanel]="true"
       [allowColumnResizing]="true"
       (onContentReady)="onContentReady($event)"
-      keyExpr="id"
       [allowColumnReordering]="true"
       [showBorders]="true"
       (onEditingStart)="logEvent('EditingStart', $event)"
       (onInitNewRow)="logEvent('InitNewRow', $event)"
       (onRowInserting)="logEvent('RowInserting', $event)"
-      (onRowInserted)="logEvent('RowInserted', $event)"
+      (onRowInserted)="editStudent($event, false)"
       (onRowUpdating)="logEvent('RowUpdating', $event)"
-      (onRowUpdated)="logEvent('RowUpdated', $event)"
+      (onRowUpdated)="editStudent($event, true)"
       (onRowRemoving)="logEvent('RowRemoving', $event)"
-      (onRowRemoved)="logEvent('RowRemoved', $event)">
+      (onRowRemoved)="deleteStudent($event)">
       <dxo-editing
-         mode="form"
-         [allowUpdating]="true"
-         [allowDeleting]="true"
-         [allowAdding]="true"
-         [useIcons]="true">
+        mode="form"
+        [allowUpdating]="true"
+        [allowDeleting]="true"
+        [allowAdding]="true"
+        [useIcons]="true"
+        [texts]="{
+          cancelRowChanges: 'Hủy',
+          confirmDeleteTitle: 'XÓA DỮ LIỆU',
+          confirmDeleteMessage: 'Bạn thực sự muốn xóa dữ liệu này?',
+          saveRowChanges: 'Lưu'
+        }">
       </dxo-editing>
       <!-- CONFIG SEARCH -->
       <dxo-filter-row [visible]="true"></dxo-filter-row>
@@ -35,15 +40,22 @@
       <dxi-column caption="HỌ TÊN" dataField="name" [width]="'auto'">
         <dxi-validation-rule type="required"></dxi-validation-rule>
       </dxi-column>
-      <dxi-column caption="NGÀY SINH" dataField="birthday" [alignment]="'center'" width="200" [dataType]="'date'" [format]="'dd/MM/yyyy'"></dxi-column>
-      <dxi-column caption="NGÀY BẮT ĐẦU" dataField="start_date" [alignment]="'center'" width="200" [dataType]="'date'" [format]="'dd/MM/yyyy'"></dxi-column>
-      <dxi-column caption="BẮT ĐẦU THÁNG MỚI" dataField="new_month_date" [alignment]="'center'" width="200" [dataType]="'date'" [format]="'dd/MM/yyyy'"></dxi-column>
-      <dxi-column caption="NGÀY ĐÓNG TIỀN" dataField="payment_date" [alignment]="'center'" width="200" [dataType]="'date'" [format]="'dd/MM/yyyy'"></dxi-column>
-      <dxi-column caption="SỐ ĐIỆN THOẠI" dataField="phone" [width]="'auto'"></dxi-column>
-      <dxi-column caption="EMAIL" dataField="phone" [width]="'auto'">
+      <dxi-column caption="NGÀY SINH" dataField="birthday" [alignment]="'center'" width="150" [dataType]="'date'" [format]="'dd/MM/yyyy'">
         <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column caption="NGÀY NHẬP HỌC" dataField="start_date" [alignment]="'center'" width="170" [dataType]="'date'" [format]="'dd/MM/yyyy'">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column caption="BẮT ĐẦU THÁNG MỚI" dataField="new_month_date" [alignment]="'center'" width="200" [dataType]="'date'" [format]="'dd/MM/yyyy'">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column caption="NGÀY ĐÓNG TIỀN" dataField="payment_date" [alignment]="'center'" width="170" [dataType]="'date'" [format]="'dd/MM/yyyy'">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column caption="EMAIL" dataField="email" [width]="'auto'">
         <dxi-validation-rule type="email"></dxi-validation-rule>
       </dxi-column>
+      <dxi-column caption="SĐT" dataField="phone" [width]="120" [alignment]="'right'"></dxi-column>
       <dxi-column caption="GHI CHÚ" dataField="description" [editCellTemplate]="'descriptionEditCellTemplate'"></dxi-column>
       <div *dxTemplate="let cell of 'descriptionEditCellTemplate'">
         <dx-text-area [valueChangeEvent]="'keyup'" [value]="cell.data.description" (valueChange)="cell.setValue($event)"></dx-text-area>

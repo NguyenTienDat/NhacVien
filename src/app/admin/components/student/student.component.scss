@@ -12,14 +12,22 @@
 
     /deep/ #data-grid-student {
       .dx-toolbar {
-        .dx-toolbar-items-container {
-          position: relative;
-        }
         .dx-toolbar-after {
           padding: 0;
-          position: absolute;
-          right: 16px;
-          width: calc(100% - 150px - 16px);
+          left: 0;
+          width: calc(100% - 16px);
+
+          .dx-toolbar-item:first-child {
+            width: 36px;
+
+            .dx-button {
+              background: $color_primary;
+
+              i {
+                color: $color_label_primary;
+              }
+            }
+          }
         }
       }
 
