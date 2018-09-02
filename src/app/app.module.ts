@@ -12,6 +12,8 @@ import { LoginComponent } from './authentic/login/login.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 import { AuthGuard } from './authentic/_guards/auth.guard';
 import { AuthenticationService } from './authentic/_services/authentication.service';
+import { DxLoadPanelModule } from 'devextreme-angular';
+import { SharedUiService } from './shared/shared-ui.service';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -29,7 +31,8 @@ const appRoutes: Routes = [
     AuthenticModule,
     RouterModule.forRoot(appRoutes),
     NgbModule.forRoot(),
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    DxLoadPanelModule
   ],
   declarations: [
     AppComponent,
@@ -38,6 +41,7 @@ const appRoutes: Routes = [
   providers: [
     AuthGuard,
     AuthenticationService,
+    SharedUiService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,

@@ -2,9 +2,14 @@ import { Injectable } from '@angular/core';
 import { confirm, alert } from 'devextreme/ui/dialog';
 import notify from 'devextreme/ui/notify';
 import * as moment from 'moment';
+import { BehaviorSubject } from 'rxjs';
+
+const TIME_MAX_LOAD = 5000; // Thời gian đợi lâu nhất để tắt loading panel
 
 @Injectable()
 export class SharedUiService {
+
+  public loadingPanel: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   public DELAY_TIME_RELOAD = 1000; // Thời gian chờ để reload api
 
@@ -59,6 +64,13 @@ export class SharedUiService {
       return moment(time).subtract(1, 'months');
     } else {
       return moment(time).add(1, 'months');
+    }
+  }
+
+  public showLoadingPanel(isShow) {
+    this.loadingPanel.next(isShow);
+    if (isShow) {
+      setTimeout(() => this.loadingPanel.next(false), TIME_MAX_LOAD);
     }
   }
 }

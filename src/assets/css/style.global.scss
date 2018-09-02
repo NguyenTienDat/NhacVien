@@ -1,6 +1,32 @@
 $color_primary: #3cbab2;
 $color_label_primary: #ffffff;
 
+.dx-button-blue {
+  background: #337ab7;
+  color: #fff;
+  /deep/ .dx-icon {
+    color: #fff;
+  }
+}
+
+.dx-popup-title-custom {
+  display: flex;
+  .title-container {
+    flex: calc(100% - 200px) 1 0;
+    line-height: 34px;
+  }
+  .btn-title-container {
+    .btn-title-custom {
+      background: transparent;
+      border: 1px solid transparent;
+
+      &:hover {
+        border: 1px solid #ddd;
+      }
+    }
+  }
+}
+
 /deep/ .dx-popup-title.dx-toolbar {
   background: $color_primary;
   color: #fff;

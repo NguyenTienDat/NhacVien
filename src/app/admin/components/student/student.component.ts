@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
 import { AdminService, StudentModel } from '../../services/admin.service';
 import { SharedUiService, ToastType } from '../../../shared/shared-ui.service';
 import { Observable } from 'rxjs';
+import { DxDataGridComponent } from 'devextreme-angular';
 
 @Component({
+  selector: 'app-student',
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.scss']
 })
@@ -11,6 +13,13 @@ export class StudentComponent implements OnInit {
 
   public listItemsDisplay: StudentModel[] = [];
   public isPopupStudentVisible = false;
+  @Input() public isSelectMode = false;
+  @Output() public selectChanged = new EventEmitter();
+  @ViewChild('dataGridStudent') dataGridStudent: DxDataGridComponent;
+
+  private keyOrigin = []; // keys gốc lấy từ DB
+  private keyAdd = []; // keys chọn thêm
+  private keyRemove = []; // keys bỏ chọn
 
   constructor(
     private adminService: AdminService,
@@ -85,5 +94,36 @@ export class StudentComponent implements OnInit {
         e.component.updateDimensions();
       }
     });
+  }
+
+  public selectKeys(keys, selectKeyDone) {
+    this.keyOrigin = keys;
+    if (this.dataGridStudent && this.dataGridStudent.instance) {
+      this.dataGridStudent.instance.selectRows(keys, false).then(
+        res => {
+          selectKeyDone(res);
+        }
+      );
+    }
+  }
+
+  public selectedRowKeysChange (e) {
+    console.log(e);
+
+    this.keyAdd = [];
+    this.keyRemove = [];
+    e.forEach(key => {
+      if (!this.keyOrigin.includes(key)) {
+        this.keyRemove.push(key);
+      }
+    });
+    this.keyOrigin.forEach(key => {
+      if (!e.includes(key)) {
+        this.keyAdd.push(key);
+      }
+    });
+
+    // console.log(this.keyAdd, this.keyRemove);
+    this.selectChanged.emit({addKeys: this.keyAdd, removeKeys: this.keyRemove});
   }
 }

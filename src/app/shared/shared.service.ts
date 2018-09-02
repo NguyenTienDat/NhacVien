@@ -6,6 +6,7 @@ import { throwError as observableThrowError, Observable } from 'rxjs';
 @Injectable()
 export class SharedService {
 
+  // protected BASE_URL = 'http://localhost/indieteq-php-my-sql-pdo-database-class/api/';
   protected BASE_URL = 'https://restful-nhacvien.000webhostapp.com/server/api/';
 
   constructor(private http: HttpClient) { }
@@ -50,7 +51,8 @@ export class SharedService {
    * @param error
    */
   private handleError(error: HttpErrorResponse) {
-    if (error.error && error.error.status && (error.error.status + '').toUpperCase().includes('TOKEN')) {
+    console.log(error);
+    if (error.error && error.error.message && (error.error.message + '').toUpperCase().includes('TOKEN') || error.status === 401) {
       this.doLogout();
     }
     return observableThrowError(error);

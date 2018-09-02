@@ -12,7 +12,6 @@ import { AdminComponent } from './admin.component';
 import { CourseComponent } from './components/course/course.component';
 import { ClassroomComponent } from './components/classroom/classroom.component';
 import { ExamComponent } from './components/exam/exam.component';
-import { SharedUiService } from '../shared/shared-ui.service';
 
 import {
   DxDataGridModule,
@@ -72,7 +71,7 @@ const adminRoutes: Routes = [
     StudentComponent,
     ExamComponent
   ],
-  providers: [AdminService, SharedUiService]
+  providers: [AdminService]
 })
 
 export class AdminModule { }

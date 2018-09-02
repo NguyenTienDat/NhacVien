@@ -1,8 +1,10 @@
 @import '../../../../assets/css/style.global.scss';
 
 .student-page {
+  height: 100%;
   .content-container {
     position: relative;
+    height: 100%;
     #btn-add {
       position: absolute;
       width: 150px;

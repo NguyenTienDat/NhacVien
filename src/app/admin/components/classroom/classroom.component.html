@@ -19,8 +19,11 @@
       <dxi-column caption="NGÀY KẾT THÚC" dataField="end_date" [alignment]="'center'" width="200" [dataType]="'date'" [format]="'dd/MM/yyyy'"></dxi-column>
       <dxi-column caption="KHÓA HỌC" dataField="course_name" [width]="'auto'"></dxi-column>
       <dxi-column caption="GHI CHÚ" dataField="description"></dxi-column>
-      <dxi-column caption="TÙY CHỌN" cellTemplate="actionCellTemplate" width="150"></dxi-column>
+      <dxi-column caption="TÙY CHỌN" cellTemplate="actionCellTemplate" width="180"></dxi-column>
       <div *dxTemplate="let cell of 'actionCellTemplate'" class="btn-action-column">
+        <div class="btn-action-container">
+          <dx-button type="blue" [width]="50" icon="fa fa-users" [ngbTooltip]="'Xếp các học viên vào lớp này'" [placement]="'left'" (click)="showPopupSelectStudent(cell?.data)"></dx-button>
+        </div>
         <div class="btn-action-container">
           <dx-button [width]="50" type="default" icon="fa fa-pencil" [ngbTooltip]="'Sửa'" [placement]="'right'" (click)="showEditPopup(cell?.data, true)"></dx-button>
         </div>
@@ -91,5 +94,23 @@
           </dx-button>
         </div>
       </div>
+  </dx-popup>
+
+  <!-- POPUP SELECT STUDENT -->
+  <dx-popup #popupSelectStudent [fullScreen]="true" [(visible)]="isPopupSelectStudentVisible" [dragEnabled]="false">
+    <div *dxTemplate="let data of 'title'" class="dx-popup-title-custom dx-popup-title dx-toolbar">
+      <div class="title-container">
+        CHỌN HỌC VIÊN CHO LỚP HỌC: {{ selectedClass?.name }}
+      </div>
+      <div class="btn-title-container">
+        <dx-button class="btn-title-custom" icon="fa fa-floppy-o" type="default" width="50" [ngbTooltip]="'Lưu lại'" [placement]="'bottom'" (click)="saveStudentSelected()"></dx-button>
+        <dx-button class="btn-title-custom" icon="fa fa-times" type="danger" width="50" [ngbTooltip]="'Đóng'" [placement]="'bottom'" (click)="popupSelectStudent.instance.hide();"></dx-button>
+      </div>
+    </div>
+    <div *dxTemplate="let data of 'content'">
+      <div class="popup-class-select-student-container">
+        <app-student #studentComponent [isSelectMode]="true" (selectChanged)="selectStudentChange($event)"></app-student>
+      </div>
+    </div>
   </dx-popup>
 </div>

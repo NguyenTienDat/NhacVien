@@ -84,6 +84,26 @@ export class AdminService extends SharedService {
     params = params.append('type', 'delete');
     return this.get(this.BASE_URL + 'student/', params);
   }
+
+  /**
+  * ============================================================================================
+  * Student_Class
+  * ============================================================================================
+  */
+  public getListStudentClass(class_id): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('class_id', class_id);
+    return this.get(this.BASE_URL + 'student_class/', params);
+  }
+
+  public saveStudentClass(class_id, student_ids_remove, student_ids_add): Observable<any> {
+    const body = {
+      class_id: class_id,
+      student_ids_add: student_ids_add,
+      student_ids_remove: student_ids_remove
+    };
+    return this.post(this.BASE_URL + 'student_class/', body);
+  }
 }
 
 export interface CourseModel {

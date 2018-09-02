@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subject, empty } from 'rxjs';
 import { debounceTime, map, switchMap, startWith } from 'rxjs/operators';
 import { AdminService, ClassModel, CourseModel } from '../../services/admin.service';
 import { SharedUiService, ToastType } from '../../../shared/shared-ui.service';
+import { StudentComponent } from '../student/student.component';
 
 @Component({
   templateUrl: './classroom.component.html',
@@ -16,14 +17,21 @@ export class ClassroomComponent implements OnInit, OnDestroy {
   public selectedClass: ClassModel;
   public isEditMode = false;
   public lsCourses: CourseModel[] = [];
+  public isPopupSelectStudentVisible = false;
 
   private searchSubscriber = new Subject<any>();
   private pageAlive = true;
   private strSearch = '';
+  private studentIdsSelected: {addKeys: number[], removeKeys: number[]} = {
+    addKeys: [],
+    removeKeys: []
+  };
+
+  @ViewChild('studentComponent') studentComponent: StudentComponent;
 
   constructor(
     private adminService: AdminService,
-    private sharedUiService: SharedUiService
+    public sharedUiService: SharedUiService
   ) { }
 
   ngOnInit() {
@@ -119,6 +127,31 @@ export class ClassroomComponent implements OnInit, OnDestroy {
     setTimeout(() => this.filter(this.strSearch, true), this.sharedUiService.DELAY_TIME_RELOAD);
   }
 
+  public showPopupSelectStudent(classModel: ClassModel) {
+    if (!classModel ||  !classModel.id) {
+      return;
+    }
+    this.isPopupSelectStudentVisible = true;
+    setTimeout(() => {
+      this.sharedUiService.showLoadingPanel(true);
+    }, 500);
+    this.selectedClass = classModel;
+    const studentIds = [];
+    setTimeout(() => {
+      this.adminService.getListStudentClass(classModel.id).subscribe(res => {
+        console.log(res);
+        if (res && res.message === 'success') {
+          res.data.forEach(item => {
+            studentIds.push(item.student_id);
+          });
+          if (this.studentComponent) {
+            this.studentComponent.selectKeys(studentIds, () => this.sharedUiService.showLoadingPanel(false));
+          }
+        }
+      });
+    }, 1000);
+  }
+
   public showEditPopup(classModel: ClassModel, isEditMode: boolean) {
     this.selectedClass = classModel;
     this.isEditMode = isEditMode;
@@ -158,6 +191,25 @@ export class ClassroomComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       if (e && e.component) {
         e.component.updateDimensions();
+      }
+    });
+  }
+
+  public selectStudentChange(studentIds) {
+    console.log(studentIds, 'selectStudentChange');
+    this.studentIdsSelected = studentIds;
+  }
+
+  public saveStudentSelected() {
+    this.sharedUiService.showLoadingPanel(true);
+    // tslint:disable-next-line:max-line-length
+    this.adminService.saveStudentClass(this.selectedClass.id, this.studentIdsSelected.addKeys, this.studentIdsSelected.removeKeys).subscribe(res => {
+      this.isPopupSelectStudentVisible = false;
+      this.sharedUiService.showLoadingPanel(false);
+      if (res && res.message === 'success') {
+        this.sharedUiService.showToast('Đã lưu dữ liệu thành công!', ToastType.success);
+      } else {
+        this.sharedUiService.showToast('Lỗi trong quá trình lưu dữ liệu!', ToastType.error);
       }
     });
   }
