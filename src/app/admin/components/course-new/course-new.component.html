@@ -1,0 +1,75 @@
+<div class="course-page">
+  <!-- CONTENT -->
+  <div class="content-container">
+    <dx-data-grid keyExpr="id" id="data-grid-course"
+      #dataGridCourse
+      [dataSource]="listItemsDisplay"
+      [height]="'100%'"
+      [showColumnHeaders]="true"
+      [hoverStateEnabled]="true" [activeStateEnabled]="true" [focusStateEnabled]="true"
+      noDataText="Không có dữ liệu!"
+      [loadPanel]="true"
+      [allowColumnResizing]="true"
+      (onContentReady)="onContentReady($event)"
+      [allowColumnReordering]="true"
+      [showBorders]="true"
+      (onEditingStart)="logEvent('EditingStart', $event)"
+      (onInitNewRow)="logEvent('InitNewRow', $event)"
+      (onRowInserting)="logEvent('RowInserting', $event)"
+      (onRowInserted)="editCourse($event, false)"
+      (onRowUpdating)="logEvent('RowUpdating', $event)"
+      (onRowUpdated)="editCourse($event, true)"
+      (onRowRemoving)="logEvent('RowRemoving', $event)"
+      (onRowRemoved)="deleteCourse($event)">
+
+      <dxo-editing
+        mode="form"
+        [allowUpdating]="true"
+        [allowDeleting]="true"
+        [allowAdding]="true"
+        [useIcons]="true"
+        [texts]="{
+          cancelRowChanges: 'Hủy',
+          confirmDeleteTitle: 'XÓA DỮ LIỆU',
+          confirmDeleteMessage: 'Bạn thực sự muốn xóa dữ liệu này?',
+          saveRowChanges: 'Lưu'
+        }">
+      </dxo-editing>
+
+      <!-- CONFIG SEARCH -->
+      <dxo-filter-row [visible]="true"></dxo-filter-row>
+      <dxo-header-filter [visible]="true"></dxo-header-filter>
+      <dxo-search-panel [visible]="true" [width]="'100%'" [placeholder]="'Tìm kiếm'"></dxo-search-panel>
+      <!-- COLUMNS DEFINE -->
+      <dxi-column caption="TÊN KHÓA" dataField="name" [width]="'auto'" sortOrder="asc" [allowSorting]="true">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column caption="GIÁ TIỀN" dataField="cost" [alignment]="'center'" width="150" [dataType]="'number'" [format]="'#,##0'"></dxi-column>
+      <dxi-column caption="THỜI GIAN" dataField="start_date" [alignment]="'center'" width="200" [dataType]="'date'" [format]="'dd/MM/yyyy'">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column caption="KHÓA GỐC" dataField="course_id_ref" [groupIndex]="0" [alignment]="'center'" width="170">
+        <dxo-lookup [dataSource]="lsParentsCourse"
+                    displayExpr="name"
+                    valueExpr="id">
+        </dxo-lookup>
+      </dxi-column>
+      <dxi-column caption="GHI CHÚ" dataField="description" [editCellTemplate]="'descriptionEditCellTemplate'"></dxi-column>
+      <div *dxTemplate="let cell of 'descriptionEditCellTemplate'">
+        <dx-text-area [valueChangeEvent]="'keyup'" [value]="cell.data.description" (valueChange)="cell.setValue($event)"></dx-text-area>
+      </div>
+
+      <dxo-group-panel [visible]="true"></dxo-group-panel>
+      <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+
+      <!-- CONFIG PAGING -->
+      <dxo-paging [pageSize]="10" [enabled]="true"></dxo-paging>
+      <dxo-pager [visible]="true"
+                [showPageSizeSelector]="true"
+                [allowedPageSizes]="[5, 10, 20]"
+                [showInfo]="true"
+                infoText="Trang {0}/{1}. (Tổng: {2})">
+      </dxo-pager>
+    </dx-data-grid>
+  </div>
+</div>

@@ -12,8 +12,12 @@ export class AdminService extends SharedService {
   * Course
   * ============================================================================================
   */
-  public getListCourse(): Observable<any> {
-    return this.get(this.BASE_URL + 'course/');
+  public getListCourse(isParents?): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    if (isParents) {
+      params = params.append('type', 'parents');
+    }
+    return this.get(this.BASE_URL + 'course/', isParents ? params : null);
   }
 
   public editCourse(id, course: CourseModel): Observable<any> {
@@ -123,6 +127,14 @@ export interface CourseModel {
   name?: string;
   cost?: number;
   description?: string;
+  course_id_ref?: number;
+  start_date?: Date;
+
+  // parents
+  parents_name?: string;
+  parents_cost?: number;
+  parents_description?: string;
+  parents_start_date?: Date;
 }
 
 export interface ClassModel {

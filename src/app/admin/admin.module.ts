@@ -8,11 +8,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AdminService } from './services/admin.service';
 import { AdminComponent } from './admin.component';
-import { CourseComponent } from './components/course/course.component';
 import { ClassroomComponent } from './components/classroom/classroom.component';
 import { ExamComponent } from './components/exam/exam.component';
 import { SchedualeComponent } from './components/scheduale/scheduale.component';
 import { StudentComponent } from './components/student/student.component';
+import { CourseNewComponent } from './components/course-new/course-new.component';
 
 import {
   DxDataGridModule,
@@ -48,7 +48,7 @@ const adminRoutes: Routes = [
     children: [
       { path: '', redirectTo: 'course' },
       // { path: 'dashboard', loadChildren: 'src/app/admin/components/dashboard/dashboard.module#DashboardModule' },
-      { path: 'course', component: CourseComponent },
+      { path: 'course', component: CourseNewComponent },
       { path: 'class', component: ClassroomComponent },
       { path: 'student', component: StudentComponent },
       { path: 'scheduale', component: SchedualeComponent },
@@ -70,7 +70,7 @@ const adminRoutes: Routes = [
   ],
   declarations: [
     AdminComponent,
-    CourseComponent,
+    CourseNewComponent,
     ClassroomComponent,
     StudentComponent,
     SchedualeComponent,
