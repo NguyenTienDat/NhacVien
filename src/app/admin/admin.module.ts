@@ -1,4 +1,3 @@
-import { StudentComponent } from './components/student/student.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -12,6 +11,8 @@ import { AdminComponent } from './admin.component';
 import { CourseComponent } from './components/course/course.component';
 import { ClassroomComponent } from './components/classroom/classroom.component';
 import { ExamComponent } from './components/exam/exam.component';
+import { SchedualeComponent } from './components/scheduale/scheduale.component';
+import { StudentComponent } from './components/student/student.component';
 
 import {
   DxDataGridModule,
@@ -22,7 +23,8 @@ import {
   DxNumberBoxModule,
   DxTextAreaModule,
   DxDateBoxModule,
-  DxSelectBoxModule
+  DxSelectBoxModule,
+  DxSchedulerModule
 } from 'devextreme-angular';
 
 const dxImports = [
@@ -34,7 +36,8 @@ const dxImports = [
   DxNumberBoxModule,
   DxTextAreaModule,
   DxDateBoxModule,
-  DxSelectBoxModule
+  DxSelectBoxModule,
+  DxSchedulerModule
 ];
 
 const adminRoutes: Routes = [
@@ -48,6 +51,7 @@ const adminRoutes: Routes = [
       { path: 'course', component: CourseComponent },
       { path: 'class', component: ClassroomComponent },
       { path: 'student', component: StudentComponent },
+      { path: 'scheduale', component: SchedualeComponent },
       { path: 'exam', component: ExamComponent },
       { path: '**', redirectTo: '/page-not-found' }
     ]
@@ -69,6 +73,7 @@ const adminRoutes: Routes = [
     CourseComponent,
     ClassroomComponent,
     StudentComponent,
+    SchedualeComponent,
     ExamComponent
   ],
   providers: [AdminService]
