@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AdminService, Employee } from '../../services/admin.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AdminService, Appointment, ClassModel } from '../../services/admin.service';
+import { Observable } from 'rxjs';
+import { DxSchedulerComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-scheduale',
@@ -7,41 +9,44 @@ import { AdminService, Employee } from '../../services/admin.service';
   styleUrls: ['./scheduale.component.scss']
 })
 export class SchedualeComponent implements OnInit {
-  dataSource: any;
-  currentDate: Date = new Date(2016, 7, 2, 11, 30);
-  resourcesDataSource: Employee[] = [];
+  dataSource: Appointment[] = [];
+  resourcesDataSource: ClassModel[] = [];
+  @ViewChild('schedualeClassEditor') schedualeClassEditor: DxSchedulerComponent;
 
   constructor(private adminService: AdminService) { }
 
   ngOnInit() {
-    this.dataSource = this.adminService.getData();
-    this.resourcesDataSource = this.adminService.getEmployees();
+    this.adminService.getListClass().subscribe(res => {
+      this.resourcesDataSource = res.data;
+    });
+    this.init();
   }
 
-  markWeekEnd(cellData) {
-    function isWeekEnd(date) {
-      const day = date.getDay();
-      return day === 0 || day === 6;
+  private init() {
+    this.adminService.getAppointment().subscribe(res => {
+      this.dataSource = res.data;
+    });
+  }
+
+  onAppointmentEvent(e, type) {
+    const data: Appointment = e.appointmentData;
+    console.log(data, type);
+    data.allDay = data.allDay ? 1 : 0;
+    let obser: Observable<any> = null;
+    switch (type) {
+      case 'add':
+        obser = this.adminService.addAppointment(data);
+        break;
+      case 'delete':
+        obser = this.adminService.deleteAppointment(data.id);
+        break;
+      case 'update':
+        obser = this.adminService.updateAppointment(data.id, data);
+        break;
     }
-    const classObject = {};
-    classObject['employee-' + cellData.groups.employeeID] = true;
-    classObject['employee-weekend-' + cellData.groups.employeeID] = isWeekEnd(cellData.startDate);
-    return classObject;
-  }
-
-  markTraining(cellData) {
-    const classObject = {
-      'day-cell': true
-    };
-
-    classObject[this.getCurrentTraining(cellData.startDate.getDate(), cellData.groups.employeeID)] = true;
-    return classObject;
-  }
-
-  getCurrentTraining(date, employeeID) {
-    const result = (date + employeeID) % 3,
-      currentTraining = 'training-background-' + result;
-
-    return currentTraining;
+    obser.subscribe(res => {
+      console.log(res);
+      setTimeout(() => this.init(), 1000);
+    });
   }
 }
