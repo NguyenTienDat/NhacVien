@@ -15,6 +15,14 @@ import { AuthenticationService } from './authentic/_services/authentication.serv
 import { DxLoadPanelModule } from 'devextreme-angular';
 import { SharedUiService } from './shared/shared-ui.service';
 
+// https://github.com/DevExpress/devextreme-examples/tree/18_1/intl-angular
+import { locale, loadMessages } from 'devextreme/localization';
+import { DevExtremeModule } from 'devextreme-angular';
+import 'devextreme-intl';
+import { LOCALIZATION } from '../assets/localization/vi';
+loadMessages(LOCALIZATION);
+locale(navigator.language);
+
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -32,7 +40,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     NgbModule.forRoot(),
     NoopAnimationsModule,
-    DxLoadPanelModule
+    DxLoadPanelModule,
+    DevExtremeModule
   ],
   declarations: [
     AppComponent,

@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AdminService, Appointment, ClassModel } from '../../services/admin.service';
 import { Observable } from 'rxjs';
 import { DxSchedulerComponent } from 'devextreme-angular';
+// import it to change locale and load localization messages
+import { locale, loadMessages } from 'devextreme/localization';
 
 @Component({
   selector: 'app-scheduale',

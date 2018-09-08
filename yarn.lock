@@ -1737,6 +1737,10 @@ devextreme-angular@^18.1.5:
   version "18.1.5"
   resolved "https://registry.yarnpkg.com/devextreme-angular/-/devextreme-angular-18.1.5.tgz#d028266f5cf39496e991438eaa1e877668913b57"
 
+devextreme-intl@^18.1.6:
+  version "18.1.6"
+  resolved "https://registry.yarnpkg.com/devextreme-intl/-/devextreme-intl-18.1.6.tgz#0e345c85c58a2a31dff4a0e12c9767919cefc14d"
+
 devextreme@^18.1.5:
   version "18.1.5"
   resolved "https://registry.yarnpkg.com/devextreme/-/devextreme-18.1.5.tgz#006aa4af147fb4144801e2cc8e520f88855dc366"
