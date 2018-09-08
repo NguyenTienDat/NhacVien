@@ -178,7 +178,7 @@ export const LOCALIZATION = {
         "dxPivotGrid-rowFieldArea": "Drop Row Fields Here",
         "dxPivotGrid-filterFieldArea": "Drop Filter Fields Here",
 
-        "dxScheduler-editorLabelTitle": "Môn học",
+        "dxScheduler-editorLabelTitle": "Nhãn",
         "dxScheduler-editorLabelStartDate": "Bắt đầu",
         "dxScheduler-editorLabelEndDate": "Kết thúc",
         "dxScheduler-editorLabelDescription": "Mô tả",
@@ -192,7 +192,7 @@ export const LOCALIZATION = {
         "dxScheduler-recurrenceMonthly": "Mỗi tháng",
         "dxScheduler-recurrenceYearly": "Mỗi năm",
 
-        "dxScheduler-recurrenceEvery": "Tất cả",
+        "dxScheduler-recurrenceEvery": "Sau mỗi",
         "dxScheduler-recurrenceEnd": "Kết thúc lặp",
         "dxScheduler-recurrenceAfter": "Sau",
         "dxScheduler-recurrenceOn": "Vào",

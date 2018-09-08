@@ -51,4 +51,38 @@ export class SchedualeComponent implements OnInit {
       setTimeout(() => this.init(), 1000);
     });
   }
+
+  onAppointmentFormCreated(data) {
+    console.log(data);
+    if (!data || !data.form) {
+      return;
+    }
+    const that = this, form = data.form;
+    const optionItems: any[] = form._options.items;
+    if (!optionItems || !optionItems[0] || optionItems[0].dataField === 'id_ref') {
+      return;
+    }
+    optionItems.splice(optionItems.length - 1, 1);
+    optionItems.unshift({
+      label: {
+        text: 'Lớp học'
+      },
+      editorType: 'dxSelectBox',
+      dataField: 'id_ref',
+      editorOptions: {
+        items: that.resourcesDataSource,
+        displayExpr: 'name',
+        valueExpr: 'id',
+        key: 'id',
+        onSelectionChanged: function(args) {
+          console.log(args);
+          if (form.getEditor('text')) {
+            form.getEditor('text').option('value', args.selectedItem.name);
+          }
+        }.bind(this)
+      }
+    });
+    console.log(optionItems);
+    form.option('items', optionItems);
+  }
 }

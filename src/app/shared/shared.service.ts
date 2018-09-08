@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { catchError, retry } from 'rxjs/operators';
 import { throwError as observableThrowError, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class SharedService {
 
-  protected BASE_URL = 'http://localhost/indieteq-php-my-sql-pdo-database-class/api/';
+  protected BASE_URL = environment.baseApi;
+  // protected BASE_URL = 'http://localhost/indieteq-php-my-sql-pdo-database-class/api/';
   // protected BASE_URL = 'https://restful-nhacvien.000webhostapp.com/server/api/';
 
   constructor(private http: HttpClient) { }

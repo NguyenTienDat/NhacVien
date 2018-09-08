@@ -1,13 +1,17 @@
-<dx-scheduler #schedualeClassEditor
+<div class="scheduale-page">
+  <dx-scheduler #schedualeClassEditor
               [dataSource]="dataSource"
-              [views]="['month']"
+              [views]="['']"
               currentView="month"
               [firstDayOfWeek]="1"
               [showAllDayPanel]="false"
-              [height]="600"
+              [startDayHour]="7"
+              [endDayHour]="22"
+              [height]="'100%'"
               (onAppointmentAdded)="onAppointmentEvent($event, 'add')"
               (onAppointmentDeleted)="onAppointmentEvent($event, 'delete')"
-              (onAppointmentUpdated)="onAppointmentEvent($event, 'update')">
+              (onAppointmentUpdated)="onAppointmentEvent($event, 'update')"
+              (onAppointmentFormCreated)="onAppointmentFormCreated($event)">
 
     <dxi-resource fieldExpr="id_ref"
                   displayExpr="name"
@@ -15,4 +19,5 @@
                   [dataSource]="resourcesDataSource"
                   label="Lớp">
     </dxi-resource>
-</dx-scheduler>
+  </dx-scheduler>
+</div>
