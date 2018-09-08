@@ -160,6 +160,7 @@ export interface ClassModel {
   description?: string;
   start_date?: Date;
   end_date?: Date;
+  color?: string;
 }
 
 export interface StudentModel {
