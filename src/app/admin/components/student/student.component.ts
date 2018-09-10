@@ -13,6 +13,7 @@ export class StudentComponent implements OnInit {
 
   public listItemsDisplay: StudentModel[] = [];
   public isPopupStudentVisible = false;
+  @Input() isLoadAllStudent = true; // Gán false khi dùng với bảng điểm danh (chỉ get các học sinh của lớp)
   @Input() public isSelectMode = false;
   @Output() public selectChanged = new EventEmitter();
   @ViewChild('dataGridStudent') dataGridStudent: DxDataGridComponent;
@@ -31,12 +32,14 @@ export class StudentComponent implements OnInit {
   }
 
   public search() {
-    this.adminService.getListStudent().subscribe(res => {
-      this.listItemsDisplay = (res && res.message === 'success' ? res.data : []);
-    }, err => {
-      console.log(err);
-      this.sharedUiService.showToast('Có lỗi khi lấy dữ liệu', ToastType.error);
-    });
+    if (this.isLoadAllStudent) {
+      this.adminService.getListStudent().subscribe(res => {
+        this.listItemsDisplay = (res && res.message === 'success' ? res.data : []);
+      }, err => {
+        console.log(err);
+        this.sharedUiService.showToast('Có lỗi khi lấy dữ liệu', ToastType.error);
+      });
+    }
   }
 
   public logEvent(nane, e) {
@@ -124,6 +127,10 @@ export class StudentComponent implements OnInit {
     });
 
     // console.log(this.keyAdd, this.keyRemove);
-    this.selectChanged.emit({addKeys: this.keyAdd, removeKeys: this.keyRemove});
+    if (this.isLoadAllStudent) {
+      this.selectChanged.emit({addKeys: this.keyAdd, removeKeys: this.keyRemove});
+    } else {
+      this.selectChanged.emit({addKeys: e, removeKeys: this.keyAdd});
+    }
   }
 }

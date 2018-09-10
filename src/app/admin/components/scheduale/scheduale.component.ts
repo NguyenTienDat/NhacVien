@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { DxSchedulerComponent } from 'devextreme-angular';
 // import it to change locale and load localization messages
 import { locale, loadMessages } from 'devextreme/localization';
+import { StudentComponent } from '../student/student.component';
+import { SharedUiService, ToastType } from '../../../shared/shared-ui.service';
 
 @Component({
   selector: 'app-scheduale',
@@ -15,7 +17,19 @@ export class SchedualeComponent implements OnInit {
   resourcesDataSource: ClassModel[] = [];
   @ViewChild('schedualeClassEditor') schedualeClassEditor: DxSchedulerComponent;
 
-  constructor(private adminService: AdminService) { }
+  // POPUP
+  @ViewChild('studentComponent') studentComponent: StudentComponent;
+  public isPopupSelectStudentVisible = false;
+  public selectedClass: Appointment;
+  private studentIdsSelected: {addKeys: number[], removeKeys: number[]} = {
+    addKeys: [],
+    removeKeys: []
+  };
+
+  constructor(
+    private adminService: AdminService,
+    private sharedUiService: SharedUiService
+  ) { }
 
   ngOnInit() {
     this.adminService.getListClass().subscribe(res => {
@@ -45,6 +59,9 @@ export class SchedualeComponent implements OnInit {
       case 'update':
         obser = this.adminService.updateAppointment(data.id, data);
         break;
+      case 'click':
+        this.selectedClass = e.targetedAppointmentData;
+        return;
     }
     obser.subscribe(res => {
       console.log(res);
@@ -85,4 +102,56 @@ export class SchedualeComponent implements OnInit {
     console.log(optionItems);
     form.option('items', optionItems);
   }
+
+  /**
+   * POPUP CHECK
+   */
+
+  public showPopupSelectStudent(classModel: Appointment) {
+    if (!classModel || !classModel.id) {
+      return;
+    }
+    this.isPopupSelectStudentVisible = true;
+    setTimeout(() => {
+      this.sharedUiService.showLoadingPanel(true);
+    }, 500);
+    const studentIds = [];
+    setTimeout(() => {
+      this.adminService.getStudentCheck(classModel.id_ref, classModel.startDate).subscribe(res => {
+        console.log(res, 'getStudentCheck');
+        if (res && res.message === 'success') {
+          res.data.forEach(item => {
+            if (item.type === 1) {
+              studentIds.push(item.id);
+            }
+          });
+          if (this.studentComponent) {
+            this.studentComponent.listItemsDisplay = res.data ? res.data : [];
+            this.studentComponent.selectKeys(studentIds, () => this.sharedUiService.showLoadingPanel(false));
+          }
+        }
+      });
+    }, 1000);
+  }
+
+  public selectStudentChange(studentIds) {
+    console.log(studentIds, 'selectStudentChange');
+    this.studentIdsSelected = studentIds;
+  }
+
+  public saveStudentSelected() {
+    this.sharedUiService.showLoadingPanel(true);
+    // tslint:disable-next-line:max-line-length
+    this.adminService.saveStudentCheck(this.studentIdsSelected.removeKeys, this.studentIdsSelected.addKeys).subscribe(res => {
+      this.isPopupSelectStudentVisible = false;
+      this.sharedUiService.showLoadingPanel(false);
+      if (res && res.message === 'success') {
+        this.sharedUiService.showToast('Đã lưu dữ liệu thành công!', ToastType.success);
+      } else {
+        this.sharedUiService.showToast('Lỗi trong quá trình lưu dữ liệu!', ToastType.error);
+      }
+    });
+  }
+
+
 }

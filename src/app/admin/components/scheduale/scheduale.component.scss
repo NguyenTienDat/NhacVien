@@ -5,4 +5,17 @@
 }
 .scheduale-page {
   height: 100%;
+
+  /deep/ .popup-class-select-student-container {
+    height: 100%;
+
+    /deep/ #data-grid-student {
+      .dx-toolbar {
+        .dx-toolbar-after {
+          left: -15px !important;
+          width: 100% !important;
+        }
+      }
+    }
+  }
 }

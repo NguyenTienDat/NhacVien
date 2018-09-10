@@ -100,16 +100,16 @@ export class AdminService extends SharedService {
     return this.get(this.BASE_URL + 'student_class/', params);
   }
 
-  public saveStudentClass(class_id, student_ids_remove, student_ids_add): Observable<any> {
+  public saveStudentClass(class_id, ids_uncheck, ids_check): Observable<any> {
     const body = {
       class_id: class_id,
-      student_ids_add: student_ids_add,
-      student_ids_remove: student_ids_remove
+      ids_check: ids_check,
+      ids_uncheck: ids_uncheck
     };
     return this.post(this.BASE_URL + 'student_class/', body);
   }
 
-/**
+  /**
   * ============================================================================================
   * Scheduale_Class
   * ============================================================================================
@@ -135,6 +135,26 @@ export class AdminService extends SharedService {
 
   addAppointment(appointment: Appointment) {
     return this.post(this.BASE_URL + 'scheduale/', appointment);
+  }
+
+  /**
+  * ============================================================================================
+  * Student_Check
+  * ============================================================================================
+  */
+  saveStudentCheck(ids_uncheck: number[], ids_check: number[]) {
+    const body = {
+      ids_check: ids_check,
+      ids_uncheck: ids_uncheck
+    };
+    return this.post(this.BASE_URL + 'student_check/', body);
+  }
+
+  getStudentCheck(class_id, time) {
+    let params: HttpParams = new HttpParams();
+    params = params.append('class_id', class_id);
+    params = params.append('time', time);
+    return this.get(this.BASE_URL + 'student_check/', params);
   }
 }
 
@@ -184,4 +204,7 @@ export interface Appointment {
   text?: string;
   description?: string;
   recurrenceRule?: string;
+
+  // FE
+  class_name?: string;
 }

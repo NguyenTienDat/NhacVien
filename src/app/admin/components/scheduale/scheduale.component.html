@@ -8,6 +8,8 @@
               [startDayHour]="7"
               [endDayHour]="22"
               [height]="'100%'"
+              appointmentTooltipTemplate="appointment-template"
+              (onAppointmentClick)="onAppointmentEvent($event, 'click')"
               (onAppointmentAdded)="onAppointmentEvent($event, 'add')"
               (onAppointmentDeleted)="onAppointmentEvent($event, 'delete')"
               (onAppointmentUpdated)="onAppointmentEvent($event, 'update')"
@@ -19,5 +21,34 @@
                   [dataSource]="resourcesDataSource"
                   label="Lớp">
     </dxi-resource>
+
+    <div *dxTemplate="let appointment of 'appointment-template'">
+      <div class="appointment-content">
+          <div class="appointment-text">{{appointment.text}}</div>
+          <div class="appointment-dates">
+              {{(appointment.startDate | date:'shortTime') + ' - ' + (appointment.endDate | date:'shortTime')}}
+          </div>
+          <dx-button class="delete-appointment" icon="trash" (onClick)="onAppointmentEvent({ appointmentData: appointment }, 'delete')"></dx-button>
+          <dx-button class="delete-appointment" icon="times" (onClick)="showPopupSelectStudent(selectedClass)"></dx-button>
+      </div>
+    </div>
   </dx-scheduler>
+
+  <!-- POPUP SELECT STUDENT -->
+  <dx-popup #popupSelectStudent [fullScreen]="true" [(visible)]="isPopupSelectStudentVisible" [dragEnabled]="false">
+    <div *dxTemplate="let data of 'title'" class="dx-popup-title-custom dx-popup-title dx-toolbar">
+      <div class="title-container">
+        CHỌN HỌC VIÊN CHO LỚP HỌC: {{ selectedClass?.class_name }}
+      </div>
+      <div class="btn-title-container">
+        <dx-button class="btn-title-custom" icon="fa fa-floppy-o" type="default" width="50" [ngbTooltip]="'Lưu lại'" [placement]="'bottom'" (click)="saveStudentSelected()"></dx-button>
+        <dx-button class="btn-title-custom" icon="fa fa-times" type="danger" width="50" [ngbTooltip]="'Đóng'" [placement]="'bottom'" (click)="popupSelectStudent.instance.hide();"></dx-button>
+      </div>
+    </div>
+    <div *dxTemplate="let data of 'content'">
+      <div class="popup-class-select-student-container">
+        <app-student #studentComponent [isSelectMode]="true" [isLoadAllStudent]="false" (selectChanged)="selectStudentChange($event)"></app-student>
+      </div>
+    </div>
+  </dx-popup>
 </div>
