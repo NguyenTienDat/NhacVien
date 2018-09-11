@@ -60,7 +60,14 @@ export class SchedualeComponent implements OnInit {
         obser = this.adminService.updateAppointment(data.id, data);
         break;
       case 'click':
-        this.selectedClass = e.targetedAppointmentData;
+        const target: Appointment = e.targetedAppointmentData;
+        const startDate = this.sharedUiService.getTimeOfDate(target.startDate, data.startDate);
+        const endDate = this.sharedUiService.getTimeOfDate(target.endDate, data.endDate);
+        target.startDate = new Date(startDate);
+        target.endDate = new Date(endDate);
+        setTimeout(() => {
+          this.selectedClass = target;
+        }, 200);
         return;
     }
     obser.subscribe(res => {
@@ -127,7 +134,7 @@ export class SchedualeComponent implements OnInit {
           });
           if (this.studentComponent) {
             this.studentComponent.listItemsDisplay = res.data ? res.data : [];
-            this.studentComponent.selectKeys(studentIds, () => this.sharedUiService.showLoadingPanel(false));
+            setTimeout(() => this.studentComponent.selectKeys(studentIds, () => this.sharedUiService.showLoadingPanel(false)), 1000);
           }
         }
       });
@@ -153,5 +160,12 @@ export class SchedualeComponent implements OnInit {
     });
   }
 
+  public saveCheckDescription(e) {
+    console.log(e);
 
+    this.adminService.saveDescriptionStudentCheck(e.key, e.data.description).subscribe(res => {
+      console.log(res);
+      this.sharedUiService.showToast(`Thêm ghi chú cho ${e.data.name} thành công!`, ToastType.success);
+    });
+  }
 }

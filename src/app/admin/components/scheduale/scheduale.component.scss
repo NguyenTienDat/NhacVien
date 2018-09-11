@@ -19,3 +19,11 @@
     }
   }
 }
+
+/deep/ .appointment-content {
+  font-size: 18px;
+
+  .appointment-text {
+    font-weight: bold;
+  }
+}

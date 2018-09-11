@@ -3,6 +3,7 @@ import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CourseModel, ClassModel } from './admin.service';
 import { SharedService } from '../../shared/shared.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class AdminService extends SharedService {
@@ -150,11 +151,21 @@ export class AdminService extends SharedService {
     return this.post(this.BASE_URL + 'student_check/', body);
   }
 
-  getStudentCheck(class_id, time) {
+  getStudentCheck(class_id, time: Date) {
     let params: HttpParams = new HttpParams();
     params = params.append('class_id', class_id);
-    params = params.append('time', time);
+    params = params.append('time', moment(time).format('YYYY-MM-DD HH:mm:ss'));
     return this.get(this.BASE_URL + 'student_check/', params);
+  }
+
+  saveDescriptionStudentCheck(id: number, description: string) {
+    const body = {
+      id: id,
+      description: description
+    };
+    let params = new HttpParams();
+    params = params.append('type', 'description');
+    return this.post(this.BASE_URL + 'student_check/', body, params);
   }
 }
 

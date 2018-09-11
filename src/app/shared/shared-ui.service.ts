@@ -73,6 +73,14 @@ export class SharedUiService {
       setTimeout(() => this.loadingPanel.next(false), TIME_MAX_LOAD);
     }
   }
+
+  /**
+   * Set time cho date
+   */
+  public getTimeOfDate(date: Date, time: Date) {
+    const momentTime = moment(time);
+    return moment(date).set('hour', momentTime.get('hour')).set('minute', momentTime.get('minute')).format('YYYY-MM-DD HH:mm:ss');
+  }
 }
 
 export enum ToastType {

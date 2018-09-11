@@ -22,6 +22,10 @@ export class StudentComponent implements OnInit {
   private keyAdd = []; // keys chọn thêm
   private keyRemove = []; // keys bỏ chọn
 
+  public isPopupEditDescriptionVisible = false;
+  public descriptionSelected;
+  @Output() saveCheckDescription = new EventEmitter();
+
   constructor(
     private adminService: AdminService,
     private sharedUiService: SharedUiService
@@ -132,5 +136,17 @@ export class StudentComponent implements OnInit {
     } else {
       this.selectChanged.emit({addKeys: e, removeKeys: this.keyAdd});
     }
+  }
+
+  public showPopupDescription(cell) {
+    console.log(cell);
+    this.descriptionSelected = cell;
+    setTimeout(() => this.isPopupEditDescriptionVisible = true, 500);
+  }
+
+  public saveDescription(text) {
+    this.descriptionSelected.data.description = text;
+    this.saveCheckDescription.emit(this.descriptionSelected);
+    this.isPopupEditDescriptionVisible = false;
   }
 }
