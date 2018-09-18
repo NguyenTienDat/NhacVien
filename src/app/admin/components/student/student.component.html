@@ -51,6 +51,11 @@
       <dxo-header-filter [visible]="true"></dxo-header-filter>
       <dxo-search-panel [visible]="true" [width]="'100%'" [placeholder]="'Tìm kiếm'"></dxo-search-panel>
       <!-- COLUMNS DEFINE -->
+      <dxi-column [caption]="'ĐIỂM DANH'" *ngIf="!isLoadAllStudent" [fixed]="true" [cellTemplate]="'reasonEditCellTemplate'" [width]="170" [alignment]="'center'" [allowSearch]="true"></dxi-column>
+      <div *dxTemplate="let cell of 'reasonEditCellTemplate'">
+        <dx-select-box [value]="cell?.data?.type" [dataSource]="statusCheck" [valueExpr]="'id'" [displayExpr]="'name'" [searchExpr]="'name'" (onValueChanged)="saveTypeCheck(cell, $event)"></dx-select-box>
+      </div>
+
       <dxi-column caption="HỌ TÊN" dataField="name" [width]="300" [fixed]="true">
         <dxi-validation-rule type="required"></dxi-validation-rule>
       </dxi-column>
@@ -74,12 +79,6 @@
       <div *dxTemplate="let cell of 'descriptionEditCellTemplate'">
         <dx-text-area [valueChangeEvent]="'keyup'" [value]="cell.data.description" (valueChange)="cell.setValue($event)"></dx-text-area>
       </div>
-
-      <dxi-column *ngIf="!isLoadAllStudent" [cellTemplate]="'reasonEditCellTemplate'" [width]="70" [alignment]="'center'"></dxi-column>
-      <div *dxTemplate="let cell of 'reasonEditCellTemplate'">
-        <button title="Ghi chú" class="btn btn-secondary fa fa-sticky-note-o" type="button" (click)="showPopupDescription(cell)"></button>
-      </div>
-
       <!-- CONFIG PAGING -->
       <dxo-paging [pageSize]="20" [enabled]="true"></dxo-paging>
       <dxo-pager [visible]="true"
@@ -90,18 +89,4 @@
       </dxo-pager>
     </dx-data-grid>
   </div>
-
-
-  <!-- POPUP EDIT GHI CHÚ -->
-  <dx-popup [title]="'GHI CHÚ: ' + (descriptionSelected?.data?.name | uppercase)" [(visible)]="isPopupEditDescriptionVisible" [width]="400" [height]="320" [dragEnabled]="false">
-    <div *dxTemplate="let data of 'content'">
-      <div class="popup-class-edit-container" *ngIf="isPopupEditDescriptionVisible">
-        <div class="field-value">
-          <dx-text-area #txtDescription placeholder="Lý do nghỉ, ghi chú.." [value]="descriptionSelected?.data?.description" [height]="180"></dx-text-area>
-        </div>
-        <dx-button style="margin-top: 10px" type="default" class="btn btn-save pull-right" icon="fa fa-floppy-o" text="OK" (click)="saveDescription(txtDescription?.text)"></dx-button>
-      </div>
-    </div>
-  </dx-popup>
-
 </div>

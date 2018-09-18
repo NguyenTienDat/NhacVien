@@ -73,6 +73,12 @@ export class AdminService extends SharedService {
     return this.get(this.BASE_URL + 'student/');
   }
 
+  public getListStudentByClass(class_id): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append('class_id', class_id);
+    return this.get(this.BASE_URL + 'student/', params);
+  }
+
   public editStudent(id, objectModel: StudentModel): Observable<any> {
     let params: HttpParams = new HttpParams();
     params = params.append('id', id);
@@ -151,6 +157,14 @@ export class AdminService extends SharedService {
     return this.post(this.BASE_URL + 'student_check/', body);
   }
 
+  saveStudentTypeCheck(id: number, type: number) {
+    const body = {
+      id: id,
+      type: type
+    };
+    return this.post(this.BASE_URL + 'student_check/', body);
+  }
+
   getStudentCheck(class_id, time: Date) {
     let params: HttpParams = new HttpParams();
     params = params.append('class_id', class_id);
@@ -218,4 +232,6 @@ export interface Appointment {
 
   // FE
   class_name?: string;
+  students: any[];
+  color?: string;
 }

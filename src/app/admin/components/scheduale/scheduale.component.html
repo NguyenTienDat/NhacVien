@@ -28,6 +28,14 @@
         <div class="appointment-dates">
           {{(appointment?.startDate | date:'shortTime') + ' - ' + (appointment?.endDate | date:'shortTime')}}
         </div>
+        <div class="appointment-students">
+          <div class="appointment-student"
+              *ngFor="let student of selectedClass?.students"
+              [ngStyle]="{background: selectedClass?.color}"
+              [routerLink]="student?.id">
+            {{ student?.name }}
+          </div>
+        </div>
         <div>
           <dx-button title="Xóa lịch" class="delete-appointment" type="danger" icon="trash" (onClick)="onAppointmentEvent({ appointmentData: appointment }, 'delete')"></dx-button>
           <dx-button title="Điểm danh" class="delete-appointment" type="success" icon="fa fa-calendar-check-o" (onClick)="showPopupSelectStudent(selectedClass)"></dx-button>
@@ -46,13 +54,12 @@
           {{ ' (' + (selectedClass.startDate | date:'dd/MM/yyyy') + ')'}}
       </div>
       <div class="btn-title-container">
-        <dx-button class="btn-title-custom" icon="fa fa-floppy-o" type="default" width="50" [ngbTooltip]="'Lưu lại'" [placement]="'bottom'" (click)="saveStudentSelected()"></dx-button>
         <dx-button class="btn-title-custom" icon="fa fa-times" type="danger" width="50" [ngbTooltip]="'Đóng'" [placement]="'bottom'" (click)="popupSelectStudent.instance.hide();"></dx-button>
       </div>
     </div>
     <div *dxTemplate="let data of 'content'">
       <div class="popup-class-select-student-container">
-        <app-student #studentComponent [isSelectMode]="true" [isLoadAllStudent]="false" (selectChanged)="selectStudentChange($event)" (saveCheckDescription)="saveCheckDescription($event)"></app-student>
+        <app-student #studentComponent [isSelectMode]="true" [isLoadAllStudent]="false" (changeTypeCheck)="changeTypeCheck($event)"></app-student>
       </div>
     </div>
   </dx-popup>

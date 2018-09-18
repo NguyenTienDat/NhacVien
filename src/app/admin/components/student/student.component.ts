@@ -22,9 +22,21 @@ export class StudentComponent implements OnInit {
   private keyAdd = []; // keys chọn thêm
   private keyRemove = []; // keys bỏ chọn
 
-  public isPopupEditDescriptionVisible = false;
-  public descriptionSelected;
-  @Output() saveCheckDescription = new EventEmitter();
+  public statusCheck = [
+    {
+      id: 0,
+      name: 'Có đi học'
+    },
+    {
+      id: 1,
+      name: 'Vắng có phép'
+    },
+    {
+      id: 2,
+      name: 'Vắng không phép'
+    }
+  ];
+  @Output() changeTypeCheck = new EventEmitter();
 
   constructor(
     private adminService: AdminService,
@@ -138,15 +150,8 @@ export class StudentComponent implements OnInit {
     }
   }
 
-  public showPopupDescription(cell) {
-    console.log(cell);
-    this.descriptionSelected = cell;
-    setTimeout(() => this.isPopupEditDescriptionVisible = true, 500);
-  }
-
-  public saveDescription(text) {
-    this.descriptionSelected.data.description = text;
-    this.saveCheckDescription.emit(this.descriptionSelected);
-    this.isPopupEditDescriptionVisible = false;
+  public saveTypeCheck(student, e) {
+    console.log(student, e);
+    this.changeTypeCheck.emit({ student: student, type: e });
   }
 }

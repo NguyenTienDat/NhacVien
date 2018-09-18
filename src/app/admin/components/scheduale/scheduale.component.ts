@@ -21,10 +21,6 @@ export class SchedualeComponent implements OnInit {
   @ViewChild('studentComponent') studentComponent: StudentComponent;
   public isPopupSelectStudentVisible = false;
   public selectedClass: Appointment;
-  private studentIdsSelected: {addKeys: number[], removeKeys: number[]} = {
-    addKeys: [],
-    removeKeys: []
-  };
 
   constructor(
     private adminService: AdminService,
@@ -67,6 +63,14 @@ export class SchedualeComponent implements OnInit {
         target.endDate = new Date(endDate);
         setTimeout(() => {
           this.selectedClass = target;
+          this.adminService.getListStudentByClass(target.id_ref).subscribe(res => {
+            this.selectedClass.students = res && res.data ? res.data : [];
+            try {
+              document.getElementsByClassName('dx-popup-content').item(2).setAttribute('style', 'height: auto');
+            } catch (error) {
+            }
+            console.log(this.selectedClass.students);
+          });
         }, 200);
         return;
     }
@@ -134,38 +138,23 @@ export class SchedualeComponent implements OnInit {
           });
           if (this.studentComponent) {
             this.studentComponent.listItemsDisplay = res.data ? res.data : [];
-            setTimeout(() => this.studentComponent.selectKeys(studentIds, () => this.sharedUiService.showLoadingPanel(false)), 1000);
+            this.sharedUiService.showLoadingPanel(false);
           }
         }
       });
     }, 1000);
   }
 
-  public selectStudentChange(studentIds) {
-    console.log(studentIds, 'selectStudentChange');
-    this.studentIdsSelected = studentIds;
-  }
-
-  public saveStudentSelected() {
-    this.sharedUiService.showLoadingPanel(true);
-    // tslint:disable-next-line:max-line-length
-    this.adminService.saveStudentCheck(this.studentIdsSelected.removeKeys, this.studentIdsSelected.addKeys).subscribe(res => {
-      this.isPopupSelectStudentVisible = false;
-      this.sharedUiService.showLoadingPanel(false);
-      if (res && res.message === 'success') {
-        this.sharedUiService.showToast('Đã lưu dữ liệu thành công!', ToastType.success);
-      } else {
-        this.sharedUiService.showToast('Lỗi trong quá trình lưu dữ liệu!', ToastType.error);
-      }
-    });
-  }
-
-  public saveCheckDescription(e) {
+  public changeTypeCheck(e) {
     console.log(e);
-
-    this.adminService.saveDescriptionStudentCheck(e.key, e.data.description).subscribe(res => {
-      console.log(res);
-      this.sharedUiService.showToast(`Thêm ghi chú cho ${e.data.name} thành công!`, ToastType.success);
+    this.adminService.saveStudentTypeCheck(e.student.key, e.type.value).subscribe(res => {
+      if (res && res.message === 'success') {
+        this.sharedUiService.showToast(`${e.student.data.name}: ${e.type.component._options.text}`, ToastType.success);
+      } else {
+        throw res;
+      }
+    }, err => {
+      this.sharedUiService.showToast(`Lỗi điểm danh: ${e.student.data.name}`, ToastType.error);
     });
   }
 }
